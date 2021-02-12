@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users_v1/{userId} {
+    	allow read: if authorized(request) && isOwner(request.auth.uid, userId);
+      allow create: if authorized(request) &&
+        !exists(/databases/$(database)/documents/users_v1/$(request.auth.uid));
+      allow update: if authorized(request) && isOwner(request.auth.uid, userId) &&
+        writableUser(request.resource.data);
+    }
+    match /device_tokens_v1/{userId} {
+      allow read: if authorized(request) && isOwner(request.auth.uid, userId);
+      allow create: if authorized(request) && isOwner(request.auth.uid, userId) &&
+        request.resource.data.token != '';
+      allow update: if authorized(request) && isOwner(request.auth.uid, userId) &&
+        request.resource.data.token != '';
+    }
+  }
+  
+  function authorized(request) {
+  	return request.auth != null;
+  }
+
+  function isOwner(reqUid, userId) {
+    return reqUid == userId;
+  }
+
+  function writableUser(user) {
+  	return ('name' in user && user.name is string) ||
+      ('updatedAt' in user && user.updatedAt is timestamp);
+  }
+}
