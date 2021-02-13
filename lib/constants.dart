@@ -58,4 +58,9 @@ class Constants {
   static String playStoreURL =
       'http://play.google.com/store/apps/details?id=<hoge-id>';
   static String appleStoreURL = 'https://itunes.apple.com/app/id<hoge-id>';
+
+  static Color baseColor = const Color(0xFF212121);
+  static Color mainColor = const Color(0xFF9E9E9E);
+  static Color activeColor = const Color(0xFFFAFAFA);
+  static Color bkColor = const Color(0xFF000000);
 }

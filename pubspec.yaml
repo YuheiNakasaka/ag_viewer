@@ -32,6 +32,7 @@ dependencies:
       url: git@github.com:YuheiNakasaka/flutter-plugins.git
       ref: fix/ios-hls-bug
       path: packages/video_player/video_player
+  flutter_inappwebview: ^4.0.0+4
 
 dev_dependencies:
   flutter_test:
