@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      #wrapper {
+        width: 100%;
+        height: 100%;
+      }
+      video {
+        object-fit: cover;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <video id="video-main" controls playsinline webkit-playsinline></video>
+    </div>
+    <script>
+      window.onload = function() {
+        const liveURL = 'https://fms2.uniqueradio.jp/agqr10/aandg1.m3u8';
+        const videoWidth = window.innerWidth;
+        const videoHeight = videoWidth * (9 / 16);
+        const video = document.getElementById('video-main');
+        video.setAttribute('width', videoWidth);
+        video.setAttribute('height', videoHeight);
+        if(Hls.isSupported()) {
+          const hls = new Hls();
+          hls.loadSource(liveURL);
+          hls.attachMedia(video);
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = liveURL;
+          video.addEventListener('loadedmetadata', function() {
+            video.play();
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

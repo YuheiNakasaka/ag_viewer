@@ -3,6 +3,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
+/// 拡張版video_playerを使ってhlsを再生する実装
+/// tweetのviewと共存できる・PinPができない・background再生ができない
 class HomePage extends StatefulWidget {
   const HomePage();
 
@@ -18,7 +20,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
-        'https://fms2.uniqueradio.jp/agqr10/aandg1.m3u8')
+        'https://fms2.uniqueradio.jp/agqr10/aandg1.m3u8',
+        videoPlayerOptions: VideoPlayerOptions(observeAppLifecycle: false))
       ..initialize().then((_) {
         setState(() => initialized = true);
       });
@@ -120,3 +123,85 @@ class TweetBox extends StatelessWidget {
     );
   }
 }
+
+/// webviewを使ってhlsを再生する実装
+/// tweetのviewと共存できる・PinPができる・background再生ができない
+// import 'package:ag_viewer/constants.dart';
+// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+// import 'package:flutter/material.dart';
+
+// class HomePage extends StatefulWidget {
+//   const HomePage();
+
+//   @override
+//   _HomePageState createState() => _HomePageState();
+// }
+
+// class _HomePageState extends State<HomePage> {
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Constants.bkColor,
+//       body: SafeArea(
+//         child: LayoutBuilder(builder: (context, constraints) {
+//           final playerWidth = constraints.constrainWidth();
+//           final playerHeight = playerWidth * (9 / 16);
+//           final twBoxHeight = constraints.constrainHeight() - playerHeight;
+//           return Column(
+//             children: [
+//               SizedBox(
+//                 width: playerWidth,
+//                 height: playerHeight,
+//                 child: const PlayerBox(),
+//               ),
+//               SizedBox(
+//                 height: twBoxHeight,
+//                 child: const TweetBox(),
+//               ),
+//             ],
+//           );
+//         }),
+//       ),
+//     );
+//   }
+// }
+
+// class PlayerBox extends StatelessWidget {
+//   const PlayerBox();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return InAppWebView(
+//       initialFile: 'assets/hls.html',
+//       initialOptions: InAppWebViewGroupOptions(
+//         ios: IOSInAppWebViewOptions(
+//           allowsInlineMediaPlayback: true,
+//           allowsBackForwardNavigationGestures: false,
+//         ),
+//         android: AndroidInAppWebViewOptions(),
+//       ),
+//     );
+//   }
+// }
+
+// class TweetBox extends StatelessWidget {
+//   const TweetBox();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const InAppWebView(
+//       initialUrl:
+//           'https://www.uniqueradio.jp/_common/twitter/twitter-inc2.html',
+//     );
+//   }
+// }
