@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
 /// 拡張版video_playerを使ってhlsを再生する実装
-/// tweetのviewと共存できる・PinPができない・background再生ができない
+/// tweetのviewと共存できる・PinPができない・background再生ができる
 class HomePage extends StatefulWidget {
   const HomePage();
 
@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
           final playerHeight =
               playerWidth * (1 / _controller.value.aspectRatio);
           final twBoxHeight = constraints.constrainHeight() - playerHeight;
-          print('$playerWidth $playerHeight $twBoxHeight');
           return Column(
             children: [
               Stack(
