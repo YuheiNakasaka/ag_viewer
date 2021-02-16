@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:ag_viewer/blocs/user_bloc.dart';
-import 'package:ag_viewer/models/device_token.dart';
+import 'package:ag_viewer/models/device_token_object.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -97,25 +97,25 @@ Future<void> initNotification({
   print('uid: ${UserBloc.fireUser.uid} token: $token');
   if (token != '') {
     final snapshot = await FirebaseFirestore.instance
-        .collection(DeviceToken.clnName)
+        .collection(DeviceTokenObject.clnName)
         .doc(UserBloc.fireUser.uid)
         .get();
     if (!snapshot.exists) {
       await FirebaseFirestore.instance
-          .collection(DeviceToken.clnName)
+          .collection(DeviceTokenObject.clnName)
           .doc(UserBloc.fireUser.uid)
-          .set(DeviceToken(
+          .set(DeviceTokenObject(
             userId: UserBloc.fireUser.uid,
             token: token,
           ).toDocument());
     } else {
-      final deviceToken = DeviceToken.fromDocument(snapshot.data());
+      final deviceToken = DeviceTokenObject.fromDocument(snapshot.data());
       final existToken = deviceToken.token;
       if (existToken != token) {
         await FirebaseFirestore.instance
-            .collection(DeviceToken.clnName)
+            .collection(DeviceTokenObject.clnName)
             .doc(UserBloc.fireUser.uid)
-            .update(DeviceToken(
+            .update(DeviceTokenObject(
               userId: UserBloc.fireUser.uid,
               token: token,
               createdAt: deviceToken.createdAt,

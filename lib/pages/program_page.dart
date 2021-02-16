@@ -1,5 +1,7 @@
+import 'package:ag_viewer/blocs/ag_bloc.dart';
 import 'package:ag_viewer/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProgramPage extends StatefulWidget {
   const ProgramPage();
@@ -8,6 +10,15 @@ class ProgramPage extends StatefulWidget {
 }
 
 class _ProgramPageState extends State<ProgramPage> {
+  AgBloc _agBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _agBloc = context.read<AgBloc>(agProvider);
+    _agBloc.initPrograms();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

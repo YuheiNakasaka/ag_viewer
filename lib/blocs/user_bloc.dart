@@ -1,5 +1,5 @@
 import 'package:ag_viewer/blocs/bloc.dart';
-import 'package:ag_viewer/models/user.dart';
+import 'package:ag_viewer/models/user_object.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

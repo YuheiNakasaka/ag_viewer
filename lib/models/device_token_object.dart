@@ -8,16 +8,16 @@ class DeviceTokenField {
   static const updatedAt = 'updatedAt';
 }
 
-class DeviceToken extends Equatable {
-  const DeviceToken({
+class DeviceTokenObject extends Equatable {
+  const DeviceTokenObject({
     this.userId,
     this.token,
     this.createdAt,
     this.updatedAt,
   });
 
-  factory DeviceToken.fromDocument(Map<String, dynamic> document) {
-    return DeviceToken(
+  factory DeviceTokenObject.fromDocument(Map<String, dynamic> document) {
+    return DeviceTokenObject(
       userId: document[DeviceTokenField.userId].toString(),
       token: document[DeviceTokenField.token].toString(),
       createdAt: (document[DeviceTokenField.createdAt] as Timestamp).toDate(),
