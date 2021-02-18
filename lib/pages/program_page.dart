@@ -1,5 +1,6 @@
 import 'package:ag_viewer/blocs/ag_bloc.dart';
 import 'package:ag_viewer/constants.dart';
+import 'package:ag_viewer/models/program_object.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +12,8 @@ class ProgramPage extends StatefulWidget {
 
 class _ProgramPageState extends State<ProgramPage> {
   AgBloc _agBloc;
+  GlobalKey _key = GlobalKey();
+  TabController _tabController;
 
   @override
   void initState() {
@@ -47,20 +50,145 @@ class _ProgramPageState extends State<ProgramPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return SizedBox(
-            height: 60,
-            child: Text(
-              'hogehoge',
-              style: TextStyle(
-                color: Constants.activeColor,
+      body: StreamBuilder<List<List<ProgramObject>>>(
+        stream: _agBloc.outPrograms,
+        builder: (BuildContext context,
+            AsyncSnapshot<List<List<ProgramObject>>> snapshot) {
+          if (!snapshot.hasData || snapshot.data.isEmpty) {
+            return Container();
+          }
+          return DefaultTabController(
+            length: snapshot.data.length,
+            child: SafeArea(
+              child: Scaffold(
+                key: _key,
+                backgroundColor: Constants.bkColor,
+                appBar: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  indicatorColor: Constants.activeColor,
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  tabs: <Widget>[
+                    _tab('日'),
+                    _tab('月'),
+                    _tab('火'),
+                    _tab('水'),
+                    _tab('木'),
+                    _tab('金'),
+                    _tab('土'),
+                  ],
+                ),
+                body: TabBarView(
+                  children: _tabViews(snapshot.data),
+                ),
               ),
             ),
           );
         },
       ),
     );
+  }
+
+  Widget _tab(String text) {
+    final width = MediaQuery.of(context).size.width / 7;
+    return Container(
+      width: width,
+      padding: const EdgeInsets.only(
+        top: 8.0,
+        bottom: 8.0,
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _tabViews(List<List<ProgramObject>> programs) {
+    final lists = <Widget>[];
+    for (var i = 0; i < programs.length; i++) {
+      final list = programs[i];
+      lists.add(
+        ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: 90,
+              padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Constants.baseColor,
+                    width: 1.0,
+                  ),
+                ),
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 76,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 5),
+                          child: Text(
+                            list[index].hhmm(),
+                            style: TextStyle(
+                              color: Constants.activeColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            list[index].title,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Constants.activeColor,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          child: Text(
+                            list[index].pfm,
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                              color: Constants.activeColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.favorite,
+                        color: Constants.mainColor,
+                      ),
+                      onPressed: () {
+                        print(111);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }
+    return lists;
   }
 }

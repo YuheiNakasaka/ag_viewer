@@ -10,10 +10,11 @@ class AgBloc extends Bloc {
 
   final AgApi apiRepository;
 
-  final BehaviorSubject<List<ProgramObject>> _programController =
-      BehaviorSubject<List<ProgramObject>>.seeded([]);
-  Sink<List<ProgramObject>> get _inPrograms => _programController.sink;
-  ValueStream<List<ProgramObject>> get outPrograms => _programController.stream;
+  final BehaviorSubject<List<List<ProgramObject>>> _programController =
+      BehaviorSubject<List<List<ProgramObject>>>.seeded([]);
+  Sink<List<List<ProgramObject>>> get _inPrograms => _programController.sink;
+  ValueStream<List<List<ProgramObject>>> get outPrograms =>
+      _programController.stream;
 
   Future<void> initPrograms() async {
     final programs = await apiRepository.getProgramData(type: ProgramType.all);

@@ -9,7 +9,7 @@ enum ProgramType { all, today, now }
 class AgApi {
   final _httpClient = HttpClient();
 
-  Future<List<ProgramObject>> getProgramData({
+  Future<List<List<ProgramObject>>> getProgramData({
     @required ProgramType type,
   }) async {
     Uri uri;
@@ -26,11 +26,13 @@ class AgApi {
     final response = await _getRequest(uri);
     final lists = (json.decode(response) as List<dynamic>)
         .map((dynamic list) => list as List<dynamic>)
-        .first;
-    return lists
-        .map((dynamic json) =>
-            ProgramObject.fromDocument(json as Map<String, dynamic>))
         .toList();
+    return lists.map((List<dynamic> list) {
+      return list
+          .map((dynamic json) =>
+              ProgramObject.fromDocument(json as Map<String, dynamic>))
+          .toList();
+    }).toList();
   }
 
   Future<String> _getRequest(Uri uri) async {

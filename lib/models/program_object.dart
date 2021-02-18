@@ -55,6 +55,10 @@ class ProgramObject extends Equatable {
     };
   }
 
+  String hhmm() {
+    return '${from.hour.toString().padLeft(2, '0')}:${from.minute.toString().padLeft(2, '0')}';
+  }
+
   @override
   List<Object> get props => [
         pfm,
