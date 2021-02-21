@@ -1,11 +1,8 @@
 import 'package:ag_viewer/blocs/bloc.dart';
-import 'package:ag_viewer/blocs/user_bloc.dart';
 import 'package:ag_viewer/models/favorite_object.dart';
 import 'package:ag_viewer/models/program_object.dart';
-import 'package:ag_viewer/models/user_object.dart';
 import 'package:ag_viewer/repositories/ag_api.dart';
 import 'package:ag_viewer/repositories/ag_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
@@ -41,11 +38,12 @@ class AgBloc extends Bloc {
       title: program.title,
       favoriteId: doc.id,
       subscribed: true,
+      program: program,
     );
     final _favorites = _favoriteController.value;
     _favorites.add(favorite);
     _inFavorites.add(_favorites);
-    await doc.set(favorite.toDocument());
+    await doc.set(favorite.toDocument(program));
   }
 
   Future<void> deleteFavorite(ProgramObject program) async {

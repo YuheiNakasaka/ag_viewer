@@ -1,3 +1,4 @@
+import 'package:ag_viewer/models/program_object.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,6 +15,7 @@ class FavoriteObject extends Equatable {
     this.favoriteId,
     this.title,
     this.subscribed,
+    this.program,
     this.createdAt,
     this.updatedAt,
   });
@@ -23,6 +25,7 @@ class FavoriteObject extends Equatable {
       favoriteId: document[FavoriteField.favoriteId].toString(),
       title: document[FavoriteField.title].toString(),
       subscribed: document[FavoriteField.subscribed] as bool,
+      program: ProgramObject.fromDocument(document),
       createdAt: (document[FavoriteField.createdAt] as Timestamp).toDate(),
       updatedAt: (document[FavoriteField.updatedAt] as Timestamp).toDate(),
     );
@@ -33,16 +36,24 @@ class FavoriteObject extends Equatable {
   final String title;
   final String favoriteId;
   final bool subscribed;
+  final ProgramObject program;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Map<String, Object> toDocument() {
+  Map<String, Object> toDocument(ProgramObject program) {
     return {
       FavoriteField.title: title,
       FavoriteField.favoriteId: favoriteId,
       FavoriteField.subscribed: subscribed,
       FavoriteField.createdAt: createdAt ?? FieldValue.serverTimestamp(),
       FavoriteField.updatedAt: FieldValue.serverTimestamp(),
+      // ProgramObjectも詰める
+      ProgramField.pfm: program.pfm,
+      ProgramField.duration: program.duration,
+      ProgramField.isBroadcast: program.isBroadcast,
+      ProgramField.isRepeat: program.isRepeat,
+      ProgramField.from: program.from,
+      ProgramField.to: program.to,
     };
   }
 
@@ -61,6 +72,7 @@ class FavoriteObject extends Equatable {
   subscribed: $subscribed,
   createdAt: $createdAt,
   updatedAt: $updatedAt,
+  program: $program,
 }''';
   }
 }

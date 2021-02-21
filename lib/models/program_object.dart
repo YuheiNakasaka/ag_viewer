@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class ProgramField {
@@ -28,8 +29,8 @@ class ProgramObject extends Equatable {
       duration: int.parse(document[ProgramField.duration].toString()),
       isBroadcast: document[ProgramField.isBroadcast] as bool,
       isRepeat: document[ProgramField.isRepeat] as bool,
-      from: parseAgTimeString(document[ProgramField.from].toString()),
-      to: parseAgTimeString(document[ProgramField.to].toString()),
+      from: parseAgTimeString(document[ProgramField.from]),
+      to: parseAgTimeString(document[ProgramField.to]),
     );
   }
 
@@ -83,9 +84,13 @@ class ProgramObject extends Equatable {
   }
 }
 
-DateTime parseAgTimeString(String text) {
-  final regex = RegExp(r'^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})');
-  final m = regex.firstMatch(text);
-  return DateTime.parse(
-      '${m.group(1)}-${m.group(2)}-${m.group(3)} ${m.group(4)}:${m.group(5)}:00');
+DateTime parseAgTimeString(dynamic text) {
+  try {
+    final regex = RegExp(r'^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})');
+    final m = regex.firstMatch(text.toString());
+    return DateTime.parse(
+        '${m.group(1)}-${m.group(2)}-${m.group(3)} ${m.group(4)}:${m.group(5)}:00');
+  } catch (e) {
+    return (text as Timestamp).toDate();
+  }
 }

@@ -2,6 +2,8 @@ import 'package:ag_viewer/blocs/ag_bloc.dart';
 import 'package:ag_viewer/constants.dart';
 import 'package:ag_viewer/models/favorite_object.dart';
 import 'package:ag_viewer/models/program_object.dart';
+import 'package:ag_viewer/pages/favorite_page.dart';
+import 'package:ag_viewer/widgets/favorite_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,7 +48,14 @@ class _ProgramPageState extends State<ProgramPage> {
             ),
             padding: const EdgeInsets.all(0),
             iconSize: 28,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<bool>(
+                  builder: (_) => const FavoritePage(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -115,105 +124,7 @@ class _ProgramPageState extends State<ProgramPage> {
         ListView.builder(
           itemCount: list.length,
           itemBuilder: (context, index) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              height: 90,
-              padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Constants.baseColor,
-                    width: 1.0,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 76,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 5),
-                          child: Text(
-                            list[index].hhmm(),
-                            style: TextStyle(
-                              color: Constants.activeColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                          child: Text(
-                            list[index].title,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Constants.activeColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 5, 0, 5),
-                          child: Text(
-                            list[index].pfm,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                              color: Constants.activeColor,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  StreamBuilder<List<FavoriteObject>>(
-                    stream: _agBloc.outFavorites,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<FavoriteObject>> snapshot) {
-                      if (!snapshot.hasData || snapshot.data.isEmpty) {
-                        return IconButton(
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Constants.mainColor,
-                          ),
-                          onPressed: () {
-                            _agBloc.addFavorite(list[index]);
-                          },
-                        );
-                      }
-                      return Align(
-                        child: snapshot.data
-                                .where((e) => e.isEqualTo(list[index].title))
-                                .isNotEmpty
-                            ? IconButton(
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: Constants.activeColor,
-                                ),
-                                onPressed: () {
-                                  _agBloc.deleteFavorite(list[index]);
-                                },
-                              )
-                            : IconButton(
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: Constants.mainColor,
-                                ),
-                                onPressed: () {
-                                  _agBloc.addFavorite(list[index]);
-                                },
-                              ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
+            return FavoriteItem(list[index]);
           },
         ),
       );
