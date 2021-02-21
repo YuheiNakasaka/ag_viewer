@@ -7,6 +7,13 @@ service cloud.firestore {
         !exists(/databases/$(database)/documents/users_v1/$(request.auth.uid));
       allow update: if authorized(request) && isOwner(request.auth.uid, userId) &&
         writableUser(request.resource.data);
+      match /favorites_v1/{favoriteId} {
+        allow read: if authorized(request) && isOwner(request.auth.uid, userId);
+        allow create: if authorized(request) && isOwner(request.auth.uid, userId);
+        allow update: if authorized(request) && isOwner(request.auth.uid, userId) &&
+          writableFavorite(request.resource.data);
+        allow delete: if authorized(request) && isOwner(request.auth.uid, userId);
+      }
     }
     match /device_tokens_v1/{userId} {
       allow read: if authorized(request) && isOwner(request.auth.uid, userId);
@@ -28,5 +35,10 @@ service cloud.firestore {
   function writableUser(user) {
   	return ('name' in user && user.name is string) ||
       ('updatedAt' in user && user.updatedAt is timestamp);
+  }
+
+  function writableFavorite(obj) {
+    return ('subscribed' in obj && obj.subscribed is bool) ||
+      ('updatedAt' in obj && obj.updatedAt is timestamp);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:ag_viewer/blocs/ag_bloc.dart';
 import 'package:ag_viewer/constants.dart';
+import 'package:ag_viewer/models/favorite_object.dart';
 import 'package:ag_viewer/models/program_object.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,6 @@ class ProgramPage extends StatefulWidget {
 
 class _ProgramPageState extends State<ProgramPage> {
   AgBloc _agBloc;
-  GlobalKey _key = GlobalKey();
   TabController _tabController;
 
   @override
@@ -61,7 +61,6 @@ class _ProgramPageState extends State<ProgramPage> {
             length: snapshot.data.length,
             child: SafeArea(
               child: Scaffold(
-                key: _key,
                 backgroundColor: Constants.bkColor,
                 appBar: TabBar(
                   controller: _tabController,
@@ -69,13 +68,13 @@ class _ProgramPageState extends State<ProgramPage> {
                   indicatorColor: Constants.activeColor,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 2.0),
                   tabs: <Widget>[
-                    _tab('日'),
                     _tab('月'),
                     _tab('火'),
                     _tab('水'),
                     _tab('木'),
                     _tab('金'),
                     _tab('土'),
+                    _tab('日'),
                   ],
                 ),
                 body: TabBarView(
@@ -147,7 +146,7 @@ class _ProgramPageState extends State<ProgramPage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                           child: Text(
                             list[index].title,
                             overflow: TextOverflow.ellipsis,
@@ -158,9 +157,10 @@ class _ProgramPageState extends State<ProgramPage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          padding: const EdgeInsets.fromLTRB(8, 5, 0, 5),
                           child: Text(
                             list[index].pfm,
+                            overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               color: Constants.activeColor,
@@ -171,16 +171,45 @@ class _ProgramPageState extends State<ProgramPage> {
                       ],
                     ),
                   ),
-                  Align(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.favorite,
-                        color: Constants.mainColor,
-                      ),
-                      onPressed: () {
-                        print(111);
-                      },
-                    ),
+                  StreamBuilder<List<FavoriteObject>>(
+                    stream: _agBloc.outFavorites,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<FavoriteObject>> snapshot) {
+                      if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return IconButton(
+                          icon: Icon(
+                            Icons.favorite,
+                            color: Constants.mainColor,
+                          ),
+                          onPressed: () {
+                            _agBloc.addFavorite(list[index]);
+                          },
+                        );
+                      }
+                      return Align(
+                        child: snapshot.data
+                                .where((e) => e.isEqualTo(list[index].title))
+                                .isNotEmpty
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.favorite,
+                                  color: Constants.activeColor,
+                                ),
+                                onPressed: () {
+                                  _agBloc.deleteFavorite(list[index]);
+                                },
+                              )
+                            : IconButton(
+                                icon: Icon(
+                                  Icons.favorite,
+                                  color: Constants.mainColor,
+                                ),
+                                onPressed: () {
+                                  _agBloc.addFavorite(list[index]);
+                                },
+                              ),
+                      );
+                    },
                   ),
                 ],
               ),
