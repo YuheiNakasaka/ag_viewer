@@ -29,7 +29,31 @@ class AgBloc extends Bloc {
     _inFavorites.add(await fsRepository.fetchFavorites());
 
     final programs = await apiRepository.getProgramData(type: ProgramType.all);
-    _inPrograms.add(programs);
+    final sortedPrograms = <List<ProgramObject>>[
+      <ProgramObject>[],
+      <ProgramObject>[],
+      <ProgramObject>[],
+      <ProgramObject>[],
+      <ProgramObject>[],
+      <ProgramObject>[],
+      <ProgramObject>[],
+    ];
+    final irrPrograms = <ProgramObject>[];
+    for (var i = 0; i < programs.length; i++) {
+      for (var j = 0; j < programs[i].length; j++) {
+        if (programs[i][j].from.hour >= 6) {
+          sortedPrograms[i].add(programs[i][j]);
+        } else {
+          if (i - 1 < 0) {
+            irrPrograms.add(programs[i][j]);
+          } else {
+            sortedPrograms[i - 1].add(programs[i][j]);
+          }
+        }
+      }
+    }
+    sortedPrograms[6] = sortedPrograms[6] + irrPrograms;
+    _inPrograms.add(sortedPrograms);
   }
 
   Future<void> addFavorite(ProgramObject program) async {
