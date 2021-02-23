@@ -27,8 +27,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 90,
-      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+      padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 0),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -69,25 +68,34 @@ class _FavoriteItemState extends State<FavoriteItem> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                  child: Text(
-                    widget.program.title,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Constants.activeColor,
-                      fontSize: 16,
-                    ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          widget.program.title,
+                          style: TextStyle(
+                            color: Constants.activeColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 5, 0, 5),
-                  child: Text(
-                    widget.program.pfm,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                      color: Constants.activeColor,
-                      fontSize: 12,
-                    ),
+                  padding: const EdgeInsets.fromLTRB(8, 5, 0, 8),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          widget.program.pfm,
+                          style: TextStyle(
+                            color: Constants.activeColor,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

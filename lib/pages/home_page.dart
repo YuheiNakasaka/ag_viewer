@@ -107,8 +107,10 @@ class _HomePageState extends State<HomePage> {
             ),
             onTap: () async {
               if (!_controller.value.isPlaying) {
-                await _controller.play();
-                setState(() {});
+                await _controller.initialize().then((value) async {
+                  await _controller.play();
+                  setState(() {});
+                });
               }
             },
           );
