@@ -1,4 +1,5 @@
 import 'package:ag_viewer/blocs/bloc.dart';
+import 'package:ag_viewer/blocs/user_bloc.dart';
 import 'package:ag_viewer/models/favorite_object.dart';
 import 'package:ag_viewer/models/program_object.dart';
 import 'package:ag_viewer/repositories/ag_api.dart';
@@ -61,6 +62,7 @@ class AgBloc extends Bloc {
     final favorite = FavoriteObject(
       title: program.title,
       favoriteId: doc.id,
+      userId: UserBloc.fireUser.uid,
       subscribed: true,
       program: program,
     );

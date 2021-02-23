@@ -1,4 +1,5 @@
 import 'package:ag_viewer/constants.dart';
+import 'package:ag_viewer/utils/notification_handler.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
       ..initialize().then((_) {
         setState(() => initialized = true);
       });
+    Future.delayed(const Duration(milliseconds: 500), initNotification);
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 class FavoriteField {
   static const title = 'title';
   static const favoriteId = 'favoriteId';
+  static const userId = 'userId';
   static const subscribed = 'subscribed';
   static const createdAt = 'createdAt';
   static const updatedAt = 'updatedAt';
@@ -15,6 +16,7 @@ class FavoriteObject extends Equatable {
     this.favoriteId,
     this.title,
     this.subscribed,
+    this.userId,
     this.program,
     this.createdAt,
     this.updatedAt,
@@ -25,6 +27,7 @@ class FavoriteObject extends Equatable {
       favoriteId: document[FavoriteField.favoriteId].toString(),
       title: document[FavoriteField.title].toString(),
       subscribed: document[FavoriteField.subscribed] as bool,
+      userId: document[FavoriteField.favoriteId].toString(),
       program: ProgramObject.fromDocument(document),
       createdAt: (document[FavoriteField.createdAt] as Timestamp).toDate(),
       updatedAt: (document[FavoriteField.updatedAt] as Timestamp).toDate(),
@@ -36,6 +39,7 @@ class FavoriteObject extends Equatable {
   final String title;
   final String favoriteId;
   final bool subscribed;
+  final String userId;
   final ProgramObject program;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -45,6 +49,7 @@ class FavoriteObject extends Equatable {
       FavoriteField.title: title,
       FavoriteField.favoriteId: favoriteId,
       FavoriteField.subscribed: subscribed,
+      FavoriteField.userId: userId,
       FavoriteField.createdAt: createdAt ?? FieldValue.serverTimestamp(),
       FavoriteField.updatedAt: FieldValue.serverTimestamp(),
       // ProgramObjectも詰める
@@ -64,13 +69,15 @@ class FavoriteObject extends Equatable {
   }
 
   @override
-  List<Object> get props => [title, favoriteId, program.from, program.to];
+  List<Object> get props =>
+      [title, favoriteId, userId, program.from, program.to];
 
   @override
   String toString() {
     return '''Favorite: {
   title: $title,
   favoriteId: $favoriteId,
+  userId: $userId,
   subscribed: $subscribed,
   createdAt: $createdAt,
   updatedAt: $updatedAt,
