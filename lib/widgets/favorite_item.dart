@@ -115,7 +115,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
                     ? IconButton(
                         icon: Icon(
                           Icons.favorite,
-                          color: Constants.activeColor,
+                          color: Constants.acccentColor,
                         ),
                         onPressed: () {
                           _agBloc.deleteFavorite(widget.program);
