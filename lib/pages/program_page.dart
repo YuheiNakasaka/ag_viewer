@@ -1,6 +1,5 @@
 import 'package:ag_viewer/blocs/ag_bloc.dart';
 import 'package:ag_viewer/constants.dart';
-import 'package:ag_viewer/models/favorite_object.dart';
 import 'package:ag_viewer/models/program_object.dart';
 import 'package:ag_viewer/pages/favorite_page.dart';
 import 'package:ag_viewer/widgets/favorite_item.dart';
@@ -13,7 +12,8 @@ class ProgramPage extends StatefulWidget {
   _ProgramPageState createState() => _ProgramPageState();
 }
 
-class _ProgramPageState extends State<ProgramPage> {
+class _ProgramPageState extends State<ProgramPage>
+    with SingleTickerProviderStateMixin {
   AgBloc _agBloc;
   TabController _tabController;
 
@@ -22,6 +22,7 @@ class _ProgramPageState extends State<ProgramPage> {
     super.initState();
     _agBloc = context.read<AgBloc>(agProvider);
     _agBloc.initPrograms();
+    _tabController = _myTabController();
   }
 
   @override
@@ -74,7 +75,9 @@ class _ProgramPageState extends State<ProgramPage> {
                 appBar: TabBar(
                   controller: _tabController,
                   isScrollable: true,
-                  indicatorColor: Constants.activeColor,
+                  indicatorColor: Constants.acccentColor,
+                  labelColor: Constants.acccentColor,
+                  unselectedLabelColor: Constants.mainColor,
                   labelPadding: const EdgeInsets.symmetric(horizontal: 2.0),
                   tabs: <Widget>[
                     _tab('月'),
@@ -87,6 +90,7 @@ class _ProgramPageState extends State<ProgramPage> {
                   ],
                 ),
                 body: TabBarView(
+                  controller: _tabController,
                   children: _tabViews(snapshot.data),
                 ),
               ),
@@ -130,5 +134,14 @@ class _ProgramPageState extends State<ProgramPage> {
       );
     }
     return lists;
+  }
+
+  TabController _myTabController() {
+    final weekday = DateTime.now().weekday;
+    return TabController(
+      initialIndex: weekday - 1 < 0 ? 6 : weekday - 1,
+      length: 7,
+      vsync: this,
+    );
   }
 }

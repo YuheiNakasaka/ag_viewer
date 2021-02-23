@@ -58,7 +58,6 @@ class _FavoritePageState extends State<FavoritePage> {
           return ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) {
-              print(list[index]);
               return FavoriteItem(list[index].program);
             },
           );

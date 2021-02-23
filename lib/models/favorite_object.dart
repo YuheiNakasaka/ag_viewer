@@ -57,12 +57,14 @@ class FavoriteObject extends Equatable {
     };
   }
 
-  bool isEqualTo(String target) {
-    return title == target;
+  bool isEqualTo(ProgramObject target) {
+    return title == target.title &&
+        program.from == target.from &&
+        program.to == target.to;
   }
 
   @override
-  List<Object> get props => [title, favoriteId];
+  List<Object> get props => [title, favoriteId, program.from, program.to];
 
   @override
   String toString() {

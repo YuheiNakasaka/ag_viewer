@@ -63,4 +63,5 @@ class Constants {
   static Color mainColor = const Color(0xFF9E9E9E);
   static Color activeColor = const Color(0xFFFAFAFA);
   static Color bkColor = const Color(0xFF000000);
+  static Color acccentColor = const Color(0xFFE30068);
 }

@@ -46,12 +46,24 @@ class _FavoriteItemState extends State<FavoriteItem> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 5),
-                  child: Text(
-                    widget.program.hhmm(),
-                    style: TextStyle(
-                      color: Constants.activeColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  child: RichText(
+                    text: TextSpan(
+                      text: widget.program.hhmm(),
+                      style: TextStyle(
+                        color: _labelColor(),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: ' ${widget.program.isRepeat ? '[再]' : '[初回]'}',
+                          style: TextStyle(
+                            color: _labelColor(),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -98,7 +110,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
               }
               return Align(
                 child: snapshot.data
-                        .where((e) => e.isEqualTo(widget.program.title))
+                        .where((e) => e.isEqualTo(widget.program))
                         .isNotEmpty
                     ? IconButton(
                         icon: Icon(
@@ -124,5 +136,12 @@ class _FavoriteItemState extends State<FavoriteItem> {
         ],
       ),
     );
+  }
+
+  Color _labelColor() {
+    final now = DateTime.now();
+    return widget.program.from.isBefore(now) && widget.program.to.isAfter(now)
+        ? Constants.acccentColor
+        : Constants.activeColor;
   }
 }
