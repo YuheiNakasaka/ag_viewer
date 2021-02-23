@@ -1,4 +1,6 @@
+import 'package:ag_viewer/blocs/ag_bloc.dart';
 import 'package:ag_viewer/blocs/user_bloc.dart';
+import 'package:ag_viewer/blocs/webview_bloc.dart';
 import 'package:ag_viewer/constants.dart';
 import 'package:ag_viewer/pages/home_page.dart';
 import 'package:ag_viewer/pages/program_page.dart';
@@ -14,10 +16,13 @@ class _RootPageState extends State<RootPage> {
   int _currentIndex = 0;
   List<Widget> tabs = [];
 
+  AgBloc _agBloc;
+
   @override
   void initState() {
     super.initState();
     final _userBloc = context.read<UserBloc>(userProvider);
+    _agBloc = context.read<AgBloc>(agProvider);
     _userBloc.initUser();
 
     tabs = [const HomePage(), const ProgramPage()];
@@ -49,6 +54,11 @@ class _RootPageState extends State<RootPage> {
           ),
         ],
         onTap: (int index) {
+          if (index == 0 && context.read(webviewProvider).state != null) {
+            context.read(webviewProvider).state?.reload();
+          } else if (index == 1) {
+            _agBloc.initPrograms();
+          }
           setState(() => _currentIndex = index);
         },
       ),

@@ -1,8 +1,10 @@
+import 'package:ag_viewer/blocs/webview_bloc.dart';
 import 'package:ag_viewer/constants.dart';
 import 'package:ag_viewer/utils/notification_handler.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 拡張版video_playerを使ってhlsを再生する実装
 /// tweetのviewと共存できる・PinPができない・background再生ができる
@@ -118,9 +120,12 @@ class TweetBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const InAppWebView(
+    return InAppWebView(
       initialUrl:
           'https://www.uniqueradio.jp/_common/twitter/twitter-inc2.html',
+      onWebViewCreated: (InAppWebViewController controller) {
+        context.read(webviewProvider).state = controller;
+      },
     );
   }
 }

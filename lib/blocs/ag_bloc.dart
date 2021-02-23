@@ -27,6 +27,7 @@ class AgBloc extends Bloc {
       _favoriteController.stream;
 
   Future<void> initPrograms() async {
+    _inFavorites.add([]);
     _inFavorites.add(await fsRepository.fetchFavorites());
 
     final programs = await apiRepository.getProgramData(type: ProgramType.all);
