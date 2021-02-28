@@ -55,10 +55,10 @@ class Constants {
   static Constants _instance;
 
   // common
-  static String appName = 'AgViewer';
+  static String appName = 'AGViewer';
   static String playStoreURL =
       'http://play.google.com/store/apps/details?id=<hoge-id>';
-  static String appleStoreURL = 'https://itunes.apple.com/app/id<hoge-id>';
+  static String appleStoreURL = 'https://itunes.apple.com/app/id1536891943';
 
   static Color baseColor = const Color(0xFF212121);
   static Color mainColor = const Color(0xFF9E9E9E);

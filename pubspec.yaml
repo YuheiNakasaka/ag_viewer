@@ -38,8 +38,14 @@ dev_dependencies:
     sdk: flutter
   pedantic:
   pedantic_mono:
+  flutter_launcher_icons:
 
 flutter:
   uses-material-design: true
   assets:
     - assets/hls.html
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
