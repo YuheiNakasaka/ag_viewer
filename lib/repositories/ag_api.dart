@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ag_viewer/constants.dart';
 import 'package:ag_viewer/models/program_object.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +48,9 @@ class AgApi {
     final response =
         await _httpClient.getUrl(uri).then((HttpClientRequest request) {
       request.headers.add('content-type', 'application/json; charset=utf-8');
+      if (Constants.of().isPrd()) {
+        request.headers.add('user-agent', 'email:yuhei.nakasaka@gmail.com');
+      }
       return request.close();
     });
     return response.transform(utf8.decoder).join();
