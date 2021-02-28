@@ -24,6 +24,8 @@ dependencies:
 
   enum_to_string:
   package_info:
+  device_info:
+  app_settings:
   pub_semver:
   url_launcher:
   fluttertoast:

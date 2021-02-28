@@ -2,6 +2,8 @@ import 'package:ag_viewer/blocs/ag_bloc.dart';
 import 'package:ag_viewer/constants.dart';
 import 'package:ag_viewer/models/program_object.dart';
 import 'package:ag_viewer/pages/favorite_page.dart';
+import 'package:ag_viewer/pages/settings_page.dart';
+import 'package:ag_viewer/utils/navigator_handler.dart';
 import 'package:ag_viewer/widgets/favorite_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +41,9 @@ class _ProgramPageState extends State<ProgramPage>
           ),
           padding: const EdgeInsets.all(0),
           iconSize: 28,
-          onPressed: () {},
+          onPressed: () {
+            pushVertical(context, const SettingsPage());
+          },
         ),
         actions: [
           IconButton(
