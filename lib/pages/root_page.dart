@@ -4,6 +4,7 @@ import 'package:ag_viewer/blocs/webview_bloc.dart';
 import 'package:ag_viewer/constants.dart';
 import 'package:ag_viewer/pages/home_page.dart';
 import 'package:ag_viewer/pages/program_page.dart';
+import 'package:ag_viewer/utils/notification_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,16 +17,22 @@ class _RootPageState extends State<RootPage> {
   int _currentIndex = 0;
   List<Widget> tabs = [];
 
+  UserBloc _userBloc;
   AgBloc _agBloc;
 
   @override
   void initState() {
     super.initState();
-    final _userBloc = context.read<UserBloc>(userProvider);
+    _userBloc = context.read<UserBloc>(userProvider);
     _agBloc = context.read<AgBloc>(agProvider);
-    _userBloc.initUser();
+    init();
 
     tabs = [const HomePage(), const ProgramPage()];
+  }
+
+  Future<void> init() async {
+    await _userBloc.initUser();
+    Future<void>.delayed(const Duration(milliseconds: 500), initNotification);
   }
 
   @override
