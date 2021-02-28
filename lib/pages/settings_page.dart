@@ -75,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
             }
             final _emailLaunchUri = Uri(
               scheme: 'mailto',
-              path: 'yuhei.nakasaka@gmail.com',
+              path: 'mochiogaile@gmail.com',
               queryParameters: <String, String>{
                 'subject': '${Constants.appName}のお問い合わせ',
                 'body': '問い合わせ内容:\n\nお使いのデバイス:$osInfo,$version'

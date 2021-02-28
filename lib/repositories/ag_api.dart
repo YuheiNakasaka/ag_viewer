@@ -49,7 +49,7 @@ class AgApi {
         await _httpClient.getUrl(uri).then((HttpClientRequest request) {
       request.headers.add('content-type', 'application/json; charset=utf-8');
       if (Constants.of().isPrd()) {
-        request.headers.add('user-agent', 'email:yuhei.nakasaka@gmail.com');
+        request.headers.add('user-agent', 'email:mochiogaile@gmail.com');
       }
       return request.close();
     });
