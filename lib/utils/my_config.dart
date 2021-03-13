@@ -6,7 +6,7 @@ import 'package:pub_semver/pub_semver.dart';
 
 class MyConfig {
   static Future<bool> isValidVersion() async {
-    final remoteConfig = await RemoteConfig.instance;
+    final remoteConfig = RemoteConfig.instance;
     final packageInfo = await PackageInfo.fromPlatform();
     final versionText = packageInfo.version;
     final buildVersionText = packageInfo.buildNumber;
@@ -20,16 +20,17 @@ class MyConfig {
     };
 
     try {
+      await remoteConfig.setConfigSettings(
+        RemoteConfigSettings(
+            fetchTimeout: const Duration(seconds: 0),
+            minimumFetchInterval: const Duration(seconds: 0)),
+      );
       await remoteConfig.setDefaults(defaultValues);
-      await remoteConfig.fetch(expiration: const Duration(hours: 0));
-      await remoteConfig.activateFetched();
+      await remoteConfig.fetchAndActivate();
       final requiredVersion =
           Version.parse(remoteConfig.getString(appVersionKey));
       return Future.value(
           !currentVersion.compareTo(requiredVersion).isNegative);
-    } on FetchThrottledException catch (e) {
-      print('RemoteCongigError: $e');
-      return Future.value(true);
     } catch (e) {
       print('RemoteCongigError: $e');
       return Future.value(true);

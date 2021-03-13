@@ -63,7 +63,6 @@ class _VersionUpDialogState extends State<VersionUpDialog> {
               actions: <Widget>[
                 // TODO(nakasaka): ストアURLが確定したら追加する
                 FlatButton(
-                  child: const Text('ストアへ'),
                   onPressed: () {
                     if (Platform.isAndroid) {
                       _launchURL(Constants.playStoreURL);
@@ -72,6 +71,7 @@ class _VersionUpDialogState extends State<VersionUpDialog> {
                     }
                     Navigator.pop(context);
                   },
+                  child: const Text('ストアへ'),
                 ),
               ],
             ),

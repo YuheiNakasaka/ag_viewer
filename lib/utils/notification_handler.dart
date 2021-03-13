@@ -52,47 +52,30 @@ Future<void> initNotification({
   Function onLaunchCallback,
   Function onActiveCallback,
 }) async {
-  firebaseMessaging = FirebaseMessaging()
-    ..requestNotificationPermissions(
-      const IosNotificationSettings(
-        sound: true,
-        badge: true,
-        alert: true,
-        provisional: false,
-      ),
-    )
-    ..onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-      print('settings: $settings');
-    })
-    ..configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print('onMessage: $message');
-        final obj = NotificationMessageObject.fromJson(message);
-        onActiveCallback(obj.path, obj.count);
-      },
-      onBackgroundMessage:
-          Platform.isAndroid ? myBackgroundMessageHandler : null,
-      onLaunch: (Map<String, dynamic> message) async {
-        final obj = NotificationMessageObject.fromJson(message);
-        print('lastNotification: $lastNotification eventType: onLaunch');
-        // iOSでは通知受信時に新規の起動でアプリが立ち上がる場合onLaunchとonResumeの二つのイベントが発火してしまう
-        if (Platform.isIOS && obj == lastNotification) {
-          return;
-        }
-        lastNotification = obj;
-        onLaunchCallback(obj.path);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        final obj = NotificationMessageObject.fromJson(message);
-        print('lastNotification: $lastNotification eventType: onResume');
-        // iOSでは通知受信時に新規の起動でアプリが立ち上がる場合onLaunchとonResumeの二つのイベントが発火してしまう
-        if (Platform.isIOS && obj == lastNotification) {
-          return;
-        }
-        lastNotification = obj;
-        onLaunchCallback();
-      },
-    );
+  firebaseMessaging = FirebaseMessaging.instance;
+  await firebaseMessaging.requestPermission(
+    sound: true,
+    badge: true,
+    alert: true,
+    provisional: false,
+  );
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    print('onMessage: ${message.data}');
+    final obj = NotificationMessageObject.fromJson(message.data);
+    onActiveCallback(obj.path, obj.count);
+  });
+  FirebaseMessaging.onBackgroundMessage((message) async {
+    print('onBackgroundMessage: ${message.data}');
+    if (Platform.isAndroid) {
+      await myBackgroundMessageHandler(message);
+    }
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print('onMessageOpenedApp: ${message.data}');
+    final obj = NotificationMessageObject.fromJson(message.data);
+    onLaunchCallback(obj.path);
+  });
+
   final token = await firebaseMessaging.getToken();
   print('uid: ${UserBloc.fireUser.uid} token: $token');
   if (token != '') {
@@ -125,5 +108,4 @@ Future<void> initNotification({
   }
 }
 
-Future<dynamic> myBackgroundMessageHandler(
-    Map<String, dynamic> message) async {}
+Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {}

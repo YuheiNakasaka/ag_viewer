@@ -133,9 +133,11 @@ class SettingsAboutPage extends StatelessWidget {
           },
         ),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: InAppWebView(
-          initialUrl: 'https://razokulover.com/ag_viewer/about/',
+          initialUrlRequest: URLRequest(
+            url: Uri.parse('https://razokulover.com/ag_viewer/about/'),
+          ),
         ),
       ),
     );

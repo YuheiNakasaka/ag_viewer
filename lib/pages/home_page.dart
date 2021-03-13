@@ -79,20 +79,28 @@ class _HomePageState extends State<HomePage> {
   Widget playerTapLayer(double w, double h) {
     return _controller.value.isPlaying
         ? GestureDetector(
-            child: Container(
-              width: w,
-              height: h,
-              color: const Color(0x00000000),
-              child: const SizedBox(),
-            ),
             onTap: () async {
               if (_controller.value.isPlaying) {
                 await _controller.pause();
                 setState(() {});
               }
             },
+            child: Container(
+              width: w,
+              height: h,
+              color: const Color(0x00000000),
+              child: const SizedBox(),
+            ),
           )
         : GestureDetector(
+            onTap: () async {
+              if (!_controller.value.isPlaying) {
+                await _controller.initialize().then((value) async {
+                  await _controller.play();
+                  setState(() {});
+                });
+              }
+            },
             child: Container(
               width: w,
               height: h,
@@ -103,14 +111,6 @@ class _HomePageState extends State<HomePage> {
                 size: 56,
               ),
             ),
-            onTap: () async {
-              if (!_controller.value.isPlaying) {
-                await _controller.initialize().then((value) async {
-                  await _controller.play();
-                  setState(() {});
-                });
-              }
-            },
           );
   }
 }
@@ -121,8 +121,10 @@ class TweetBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
-      initialUrl:
-          'https://www.uniqueradio.jp/_common/twitter/twitter-inc2.html',
+      initialUrlRequest: URLRequest(
+        url: Uri.parse(
+            'https://www.uniqueradio.jp/_common/twitter/twitter-inc2.html'),
+      ),
       onWebViewCreated: (InAppWebViewController controller) {
         context.read(webviewProvider).state = controller;
       },
