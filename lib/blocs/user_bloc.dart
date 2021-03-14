@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserBloc extends Bloc {
-  static User get fireUser => FirebaseAuth.instance.currentUser;
+  static User get fireUser => FirebaseAuth.instance.currentUser!;
 
   Future<void> initUser() async {
     final userCredential = await FirebaseAuth.instance.signInAnonymously();
@@ -14,8 +14,8 @@ class UserBloc extends Bloc {
         .doc('${UserBloc.fireUser.uid}');
     final userDoc = await ref.get();
     if (!userDoc.exists) {
-      final user =
-          UserObject(name: 'ゲスト', userId: userCredential.user.uid).toDocument();
+      final user = UserObject(name: 'ゲスト', userId: userCredential.user!.uid)
+          .toDocument();
       await ref.set(user, SetOptions(merge: true));
     }
   }

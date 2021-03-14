@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:ag_viewer/constants.dart';
 import 'package:ag_viewer/models/program_object.dart';
-import 'package:flutter/material.dart';
 
 enum ProgramType { all, today, now }
 
@@ -11,22 +10,22 @@ class AgApi {
   final _httpClient = HttpClient();
 
   Future<List<List<ProgramObject>>> getProgramData({
-    @required ProgramType type,
+    required ProgramType type,
   }) async {
     Uri uri;
     switch (type) {
       case ProgramType.all:
-        uri = Uri.https('agqr.sun-yryr.com', '/api/all', {
+        uri = Uri.https('agqr.sun-yryr.com', '/api/all', <String, dynamic>{
           'isRepeat': 'true',
         });
         break;
       case ProgramType.today:
-        uri = Uri.https('agqr.sun-yryr.com', '/api/today', {
+        uri = Uri.https('agqr.sun-yryr.com', '/api/today', <String, dynamic>{
           'isRepeat': 'true',
         });
         break;
       default:
-        uri = Uri.https('agqr.sun-yryr.com', '/api/now', {
+        uri = Uri.https('agqr.sun-yryr.com', '/api/now', <String, dynamic>{
           'isRepeat': 'true',
         });
     }
@@ -36,9 +35,9 @@ class AgApi {
         .toList();
     return lists.map((List<dynamic> list) {
       return list
+          .where((dynamic e) => e['isRepeat'] != null)
           .map((dynamic json) =>
               ProgramObject.fromDocument(json as Map<String, dynamic>))
-          .where((e) => e.isRepeat != null)
           .toList();
     }).toList();
   }

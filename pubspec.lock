@@ -521,24 +521,21 @@ packages:
   video_player:
     dependency: "direct main"
     description:
-      path: "../flutter-plugins/packages/video_player/video_player"
-      relative: true
-    source: path
+      path: "packages/video_player/video_player"
+      ref: "fix/ios-hls-bug"
+      resolved-ref: cb10faab99827fb974059558f2394a0ff675edac
+      url: "git@github.com:YuheiNakasaka/flutter-plugins.git"
+    source: git
     version: "2.0.0-nullsafety.6"
   video_player_platform_interface:
     dependency: transitive
     description:
-      path: "../flutter-plugins/packages/video_player/video_player_platform_interface"
-      relative: true
-    source: path
+      path: "packages/video_player/video_player_platform_interface"
+      ref: "fix/ios-hls-bug"
+      resolved-ref: cb10faab99827fb974059558f2394a0ff675edac
+      url: "git@github.com:YuheiNakasaka/flutter-plugins.git"
+    source: git
     version: "3.0.0-nullsafety.3"
-  video_player_web:
-    dependency: transitive
-    description:
-      path: "../flutter-plugins/packages/video_player/video_player_web"
-      relative: true
-    source: path
-    version: "2.0.0-nullsafety.2"
   xml:
     dependency: transitive
     description:
@@ -554,5 +551,5 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.12.0-259.9.beta <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.22.2"

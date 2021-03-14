@@ -10,3 +10,4 @@ analyzer:
     prefer_int_literals: ignore
     no_default_cases: ignore
     sort_pub_dependencies: ignore
+    import_of_legacy_library_into_null_safe: ignore

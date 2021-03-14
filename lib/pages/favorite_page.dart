@@ -12,7 +12,7 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  AgBloc _agBloc;
+  late AgBloc _agBloc;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _FavoritePageState extends State<FavoritePage> {
         stream: _agBloc.outFavorites,
         builder: (BuildContext context,
             AsyncSnapshot<List<FavoriteObject>> snapshot) {
-          if (!snapshot.hasData || snapshot.data.isEmpty) {
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
               child: Text(
                 'お気に入りはまだありません',
@@ -54,7 +54,7 @@ class _FavoritePageState extends State<FavoritePage> {
               ),
             );
           }
-          final list = snapshot.data;
+          final list = snapshot.data!;
           return ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) {

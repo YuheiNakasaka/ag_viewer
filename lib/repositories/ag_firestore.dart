@@ -11,18 +11,18 @@ class AgFirestore {
   Future<List<FavoriteObject>> fetchFavorites() async {
     final favoritesRef = await FirebaseFirestore.instance
         .collection(UserObject.clnName)
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection(FavoriteObject.clnName)
         .get();
     return favoritesRef.docs
-        .map((e) => FavoriteObject.fromDocument(e.data()))
+        .map((e) => FavoriteObject.fromDocument(e.data()!))
         .toList();
   }
 
   Future<DocumentReference> fetchFavorite() async {
     return db
         .collection(UserObject.clnName)
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection(FavoriteObject.clnName)
         .doc();
   }
@@ -30,7 +30,7 @@ class AgFirestore {
   Future<void> deleteFavorite(FavoriteObject favorite) async {
     return db
         .collection(UserObject.clnName)
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection(FavoriteObject.clnName)
         .doc(favorite.favoriteId)
         .delete();

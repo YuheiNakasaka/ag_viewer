@@ -6,8 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-FirebaseMessaging firebaseMessaging;
-NotificationMessageObject lastNotification;
+late FirebaseMessaging firebaseMessaging;
+late NotificationMessageObject lastNotification;
 
 class NotificationMessageObject extends Equatable {
   NotificationMessageObject.fromJson(Map<String, dynamic> json)
@@ -49,8 +49,8 @@ class NotificationMessageObject extends Equatable {
 }
 
 Future<void> initNotification({
-  Function onLaunchCallback,
-  Function onActiveCallback,
+  required Function onLaunchCallback,
+  required Function onActiveCallback,
 }) async {
   firebaseMessaging = FirebaseMessaging.instance;
   await firebaseMessaging.requestPermission(
@@ -78,7 +78,7 @@ Future<void> initNotification({
 
   final token = await firebaseMessaging.getToken();
   print('uid: ${UserBloc.fireUser.uid} token: $token');
-  if (token != '') {
+  if (token != null && token != '') {
     final snapshot = await FirebaseFirestore.instance
         .collection(DeviceTokenObject.clnName)
         .doc(UserBloc.fireUser.uid)
@@ -92,7 +92,7 @@ Future<void> initNotification({
             token: token,
           ).toDocument());
     } else {
-      final deviceToken = DeviceTokenObject.fromDocument(snapshot.data());
+      final deviceToken = DeviceTokenObject.fromDocument(snapshot.data()!);
       final existToken = deviceToken.token;
       if (existToken != token) {
         await FirebaseFirestore.instance

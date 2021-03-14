@@ -10,8 +10,8 @@ class UserField {
 
 class UserObject extends Equatable {
   const UserObject({
-    this.name,
-    this.userId,
+    required this.name,
+    required this.userId,
     this.createdAt,
     this.updatedAt,
   }) : assert(userId != '');
@@ -27,7 +27,7 @@ class UserObject extends Equatable {
 
   Map<String, Object> toDocument() {
     return {
-      UserField.name: name ?? '',
+      UserField.name: name,
       UserField.userId: userId,
       UserField.createdAt: createdAt ?? FieldValue.serverTimestamp(),
       UserField.updatedAt: FieldValue.serverTimestamp(),
@@ -38,8 +38,8 @@ class UserObject extends Equatable {
 
   final String name;
   final String userId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   @override
   List<Object> get props => [name, userId];

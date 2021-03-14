@@ -15,7 +15,7 @@ class FavoriteItem extends StatefulWidget {
 }
 
 class _FavoriteItemState extends State<FavoriteItem> {
-  AgBloc _agBloc;
+  late AgBloc _agBloc;
 
   @override
   void initState() {
@@ -105,7 +105,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
             stream: _agBloc.outFavorites,
             builder: (BuildContext context,
                 AsyncSnapshot<List<FavoriteObject>> snapshot) {
-              if (!snapshot.hasData || snapshot.data.isEmpty) {
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return IconButton(
                   icon: Icon(
                     Icons.favorite,
@@ -117,7 +117,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
                 );
               }
               return Align(
-                child: snapshot.data
+                child: snapshot.data!
                         .where((e) => e.isEqualTo(widget.program))
                         .isNotEmpty
                     ? IconButton(

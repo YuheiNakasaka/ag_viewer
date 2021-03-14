@@ -13,11 +13,11 @@ class FavoriteField {
 
 class FavoriteObject extends Equatable {
   const FavoriteObject({
-    this.favoriteId,
-    this.title,
-    this.subscribed,
-    this.userId,
-    this.program,
+    required this.favoriteId,
+    required this.title,
+    required this.subscribed,
+    required this.userId,
+    required this.program,
     this.createdAt,
     this.updatedAt,
   });
@@ -41,8 +41,8 @@ class FavoriteObject extends Equatable {
   final bool subscribed;
   final String userId;
   final ProgramObject program;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Map<String, Object> toDocument(ProgramObject program) {
     return {

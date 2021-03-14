@@ -10,8 +10,8 @@ class DeviceTokenField {
 
 class DeviceTokenObject extends Equatable {
   const DeviceTokenObject({
-    this.userId,
-    this.token,
+    required this.userId,
+    required this.token,
     this.createdAt,
     this.updatedAt,
   });
@@ -29,8 +29,8 @@ class DeviceTokenObject extends Equatable {
 
   final String token;
   final String userId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Map<String, Object> toDocument() {
     return {

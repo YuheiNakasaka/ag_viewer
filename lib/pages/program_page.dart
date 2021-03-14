@@ -16,8 +16,8 @@ class ProgramPage extends StatefulWidget {
 
 class _ProgramPageState extends State<ProgramPage>
     with SingleTickerProviderStateMixin {
-  AgBloc _agBloc;
-  TabController _tabController;
+  late AgBloc _agBloc;
+  late TabController _tabController;
 
   @override
   void initState() {
@@ -68,11 +68,11 @@ class _ProgramPageState extends State<ProgramPage>
         stream: _agBloc.outPrograms,
         builder: (BuildContext context,
             AsyncSnapshot<List<List<ProgramObject>>> snapshot) {
-          if (!snapshot.hasData || snapshot.data.isEmpty) {
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Container();
           }
           return DefaultTabController(
-            length: snapshot.data.length,
+            length: snapshot.data!.length,
             child: SafeArea(
               child: Scaffold(
                 backgroundColor: Constants.bkColor,
@@ -95,7 +95,7 @@ class _ProgramPageState extends State<ProgramPage>
                 ),
                 body: TabBarView(
                   controller: _tabController,
-                  children: _tabViews(snapshot.data),
+                  children: _tabViews(snapshot.data!),
                 ),
               ),
             ),

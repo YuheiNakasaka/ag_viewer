@@ -8,15 +8,19 @@ class Constants {
   const Constants();
 
   factory Constants.of() {
-    if (_instance != null) {
-      return _instance;
-    }
+    // // ignore: unnecessary_null_comparison
+    // if (_instance != null) {
+    //   return _instance;
+    // }
 
     final flavor = EnumToString.fromString(
       Flavor.values,
       const String.fromEnvironment('FLAVOR'),
     );
 
+    if (flavor == null) {
+      throw Error();
+    }
     switch (flavor) {
       case Flavor.development:
         _instance = Constants._dev();
@@ -52,7 +56,7 @@ class Constants {
     return flavor == Flavor.production;
   }
 
-  static Constants _instance;
+  static late Constants _instance;
 
   // common
   static String appName = 'AGViewer';

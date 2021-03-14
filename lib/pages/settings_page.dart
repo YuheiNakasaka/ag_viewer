@@ -60,8 +60,8 @@ class _SettingsPageState extends State<SettingsPage> {
               const SettingsAboutPage(),
             );
           }),
-          _listItem('通知の許可', callback: () {
-            AppSettings.openNotificationSettings();
+          _listItem('通知の許可', callback: () async {
+            await AppSettings.openNotificationSettings();
           }),
           _listItem('問い合わせ', callback: () async {
             var osInfo = '';
@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _listItem(String title, {VoidCallback callback}) {
+  Widget _listItem(String title, {required VoidCallback callback}) {
     return ListTile(
       title: Text(
         title,
@@ -106,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
           fontSize: 16,
         ),
       ),
-      enabled: callback != null,
+      enabled: true,
       onTap: callback,
     );
   }
@@ -146,8 +146,8 @@ class SettingsAboutPage extends StatelessWidget {
 
 class SettingsLicensePage extends StatefulWidget {
   const SettingsLicensePage({
-    this.applicationName,
-    this.applicationVersion,
+    required this.applicationName,
+    required this.applicationVersion,
   });
 
   final String applicationName;

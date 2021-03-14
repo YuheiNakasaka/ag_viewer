@@ -13,13 +13,13 @@ class ProgramField {
 
 class ProgramObject extends Equatable {
   const ProgramObject({
-    this.title,
-    this.pfm,
-    this.duration,
-    this.isBroadcast,
-    this.isRepeat,
-    this.from,
-    this.to,
+    required this.title,
+    required this.pfm,
+    required this.duration,
+    required this.isBroadcast,
+    required this.isRepeat,
+    required this.from,
+    required this.to,
   });
 
   factory ProgramObject.fromDocument(Map<String, dynamic> document) {
@@ -28,7 +28,7 @@ class ProgramObject extends Equatable {
       pfm: document[ProgramField.pfm].toString(),
       duration: int.parse(document[ProgramField.duration].toString()),
       isBroadcast: document[ProgramField.isBroadcast] as bool,
-      isRepeat: document[ProgramField.isRepeat] as bool,
+      isRepeat: document[ProgramField.isRepeat] as bool || false,
       from: parseAgTimeString(document[ProgramField.from]),
       to: parseAgTimeString(document[ProgramField.to]),
     );
@@ -87,7 +87,8 @@ class ProgramObject extends Equatable {
 DateTime parseAgTimeString(dynamic text) {
   try {
     final regex = RegExp(r'^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})');
-    final m = regex.firstMatch(text.toString());
+    final m = regex.firstMatch(text.toString())!;
+
     return DateTime.parse(
         '${m.group(1)}-${m.group(2)}-${m.group(3)} ${m.group(4)}:${m.group(5)}:00');
   } catch (e) {

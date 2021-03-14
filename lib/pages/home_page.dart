@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  VideoPlayerController _controller;
+  late VideoPlayerController _controller;
   bool initialized = false;
 
   @override

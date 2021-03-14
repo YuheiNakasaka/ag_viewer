@@ -17,8 +17,8 @@ class _RootPageState extends State<RootPage> {
   int _currentIndex = 0;
   List<Widget> tabs = [];
 
-  UserBloc _userBloc;
-  AgBloc _agBloc;
+  late UserBloc _userBloc;
+  late AgBloc _agBloc;
 
   @override
   void initState() {
@@ -32,7 +32,9 @@ class _RootPageState extends State<RootPage> {
 
   Future<void> init() async {
     await _userBloc.initUser();
-    Future<void>.delayed(const Duration(milliseconds: 500), initNotification);
+    Future<void>.delayed(const Duration(milliseconds: 500), () {
+      initNotification(onActiveCallback: () {}, onLaunchCallback: () {});
+    });
   }
 
   @override
@@ -62,7 +64,7 @@ class _RootPageState extends State<RootPage> {
         ],
         onTap: (int index) {
           if (index == 0 && context.read(webviewProvider).state != null) {
-            context.read(webviewProvider).state?.reload();
+            context.read(webviewProvider).state!.reload();
           } else if (index == 1) {
             _agBloc.initPrograms();
           }

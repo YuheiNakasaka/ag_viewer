@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class App extends StatefulWidget {
-  const App({this.isValidVersion});
+  const App({required this.isValidVersion});
 
   final bool isValidVersion;
 
@@ -49,7 +49,7 @@ class _VersionUpDialogState extends State<VersionUpDialog> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
       await showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -62,7 +62,7 @@ class _VersionUpDialogState extends State<VersionUpDialog> {
               content: const Text('新しいバージョンのアプリに更新する必要があります'),
               actions: <Widget>[
                 // TODO(nakasaka): ストアURLが確定したら追加する
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     if (Platform.isAndroid) {
                       _launchURL(Constants.playStoreURL);

@@ -67,14 +67,14 @@ class AgBloc extends Bloc {
       subscribed: true,
       program: program,
     );
-    final _favorites = _favoriteController.value;
+    final _favorites = _favoriteController.value!;
     _favorites.add(favorite);
     _inFavorites.add(_favorites);
     await doc.set(favorite.toDocument(program));
   }
 
   Future<void> deleteFavorite(ProgramObject program) async {
-    final _favorites = _favoriteController.value;
+    final _favorites = _favoriteController.value!;
     final index = _favorites.indexWhere((e) => e.isEqualTo(program));
     final target = _favorites[index];
     _favorites.removeAt(index);
